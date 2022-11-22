@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
-import WorkflowStatusChangeEvent from "./WorkflowStatusChangeEvent";
+import WorkflowStatusChangeEvent from "../events/WorkflowStatusChangeEvent";
 import RegisterVoter from "../voting/RegisterVoter";
-import VoterRegisteredEvent from "./VoterRegisteredEvent";
-import ProposalRegisteredEvent from "./ProposalRegisteredEvent";
+import VoterRegisteredEvent from "../events/VoterRegisteredEvent";
+import ProposalRegisteredEvent from "../events/ProposalRegisteredEvent";
+import VotedEvent from "../events/VotedEvent";
 
 function History() {
   const { state: { contract, accounts } } = useEth();
@@ -50,6 +51,8 @@ function History() {
                 return <VoterRegisteredEvent key={e.blockNumber} event={e}></VoterRegisteredEvent>
             case 'ProposalRegistered':
                 return <ProposalRegisteredEvent key={e.blockNumber} event={e}></ProposalRegisteredEvent>
+            case 'Voted':
+                return <VotedEvent key={e.blockNumber} event={e}></VotedEvent>
             default:
                 console.log(e);
         }

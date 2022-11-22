@@ -1,9 +1,5 @@
 import React,{useState, useEffect} from "react";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import {useEth} from "../../contexts/EthContext";
 import {Button, Card, CardActions, CardContent, IconButton, InputBase, Paper} from "@mui/material";
 
@@ -42,7 +38,6 @@ function RegisterProposal(data) {
         .on('data', function(event){
             refreshProposals();
         })
-
         return (
             <Card sx={{minWidth: 800}}>
                 <CardContent>
@@ -56,7 +51,8 @@ function RegisterProposal(data) {
                         {proposals && proposals?.map(p=>
 
                             <Card style={{
-                                cursor:"pointer"
+                                cursor:"pointer",
+                                backgroundColor:p.returnValues.proposalId == ""+data.voter.votedProposalId?"green":"white"
                             }} key = {p.returnValues.proposalId} sx={{ width: 275 }} onClick={()=>addVote(p.returnValues.proposalId)}>
                                 <CardContent>
                                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -69,9 +65,6 @@ function RegisterProposal(data) {
 
                                 </CardContent>
                             </Card>
-
-
-
                         )}
                     </Typography>
                     <Typography sx={{mb: 1.5}} color="text.secondary">

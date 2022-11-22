@@ -7,7 +7,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import {useEth} from "../../contexts/EthContext";
-import {WORKFLOW_STATUS_CHANGE_NAMES} from "../Web3stuff/WorkflowStatusChangeEvent";
+import {WORKFLOW_STATUS_CHANGE_NAMES} from "../events/WorkflowStatusChangeEvent";
 import {Button, Card, CardActions, CardContent, Divider, IconButton, InputBase, Paper} from "@mui/material";
 
 function SearchIcon() {

@@ -13,7 +13,7 @@ function VoteTailed(data) {
 
     useEffect(() => {
         if (contract?.methods) {
-            data.isVoter && getWinner();
+            (data.isVoter || data.isOwner) && getWinner();
         }
     }, [contract]);
 

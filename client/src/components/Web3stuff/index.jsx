@@ -34,8 +34,6 @@ function Web3stuff() {
         return accounts && accounts[0] && accounts[0] === owner;
     }
 
-
-
     useEffect(() => {
         if (contract?.methods) {
             retrieveOwner();
@@ -48,22 +46,24 @@ function Web3stuff() {
     const steps = ["Register Voter", "Register Proposal", "Vote", "Results"];
 
     function getStepContent(step) {
-        if(!isOwner() && !user?.registered){
+        console.log(user);
+        if (!isOwner() && !user?.isRegistered) {
             return <h1 color={"red"}>You don't have access to this vote</h1>
         }
         switch (step) {
             case 0:
-                return <RegisterVoter next={next} isVoter={user?.registered} isOwner={isOwner()}/>;
+                return <RegisterVoter next={next} isVoter={user?.isRegistered} isOwner={isOwner()}/>;
             case 1:
-                return <RegisterProposal isFinished={false} isVoter={user?.registered} isOwner={isOwner()} next={next}/>;
+                return <RegisterProposal isFinished={false} isVoter={user?.isRegistered} isOwner={isOwner()}
+                                         next={next}/>;
             case 2:
-                return <RegisterProposal isFinished={true} isVoter={user?.registered} isOwner={isOwner()} next={next}/>;
+                return <RegisterProposal isFinished={true} isVoter={user?.isRegistered} isOwner={isOwner()} next={next}/>;
             case 3:
                 return <Vote isFinished={false} voter={user} isOwner={isOwner()} next={next}/>;
             case 4:
                 return <Vote isFinished={true} voter={user} isOwner={isOwner()} next={next}/>;
             case 5:
-                return <VoteTailed isVoter={user?.registered} />;
+                return <VoteTailed isVoter={user?.isRegistered}/>;
         }
     }
 
@@ -89,17 +89,11 @@ function Web3stuff() {
         await getStatus();
     }
 
-
-    const handleNext = () => {
-
-    };
-
-
     return (<div>
 
             <h1>Voting Dapp </h1>
             <small>Welcome {accounts && accounts[0]}</small>
-           <br/>
+            <br/>
             {activeStep != null && getStepContent(activeStep)}
             <hr/>
             <h1>History</h1>
@@ -111,13 +105,3 @@ function Web3stuff() {
 }
 
 export default withStyles(styles)(Web3stuff);
-
-/*
-    <div className="web3stuff">
-        <Address accounts={accounts}/>
-        <Voting></Voting>
-        Voting is currently <b>{WORKFLOW_STATUS_CHANGE_NAMES[status]}</b>
-        <Button refreshBalance={()=>{}}/>
-
-    </div>
- */
