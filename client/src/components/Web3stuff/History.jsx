@@ -39,10 +39,7 @@ function History() {
             toBlock: 'latest'
         }, function(error, events){ console.log(events); })
             .then(function(events){
-
                 setHistory(events);
-                events.push({});
-                console.log(events) // same results as the optional callback above
             });
     }
     const renderEvent = (e) =>{

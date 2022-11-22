@@ -7,13 +7,13 @@ import Checkbox from "@material-ui/core/Checkbox";
 import {Button, Card, CardActions, CardContent} from "@mui/material";
 import {useEth} from "../../contexts/EthContext";
 
-function VoteTailed() {
+function VoteTailed(data) {
     const {state: {contract, accounts, web3}} = useEth();
     const [proposal, setProposal] = useState();
 
     useEffect(() => {
         if (contract?.methods) {
-            getWinner();
+            data.isVoter && getWinner();
         }
     }, [contract]);
 
@@ -30,7 +30,8 @@ function VoteTailed() {
 
                 </Typography>
                 <Typography variant="h5" component="div">
-                    Vote finished ! Winner is : <b>{proposal?.description}</b> with <b>{proposal?.voteCount}</b> votes !
+                  Vote finished ! Winner is : <b>{proposal?.description}</b> with <b>{proposal?.voteCount}</b> votes !
+
                 </Typography>
                 <Typography sx={{mb: 1.5}} color="text.secondary">
                 </Typography>

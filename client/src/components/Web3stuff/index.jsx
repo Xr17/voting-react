@@ -13,7 +13,7 @@ function Web3stuff() {
     const {state: {contract, accounts}} = useEth();
     const [activeStep, setActiveStep] = useState();
     const [owner, setOwner] = useState();
-    const [registered, setRegistered] = useState();
+    const [user, setUser] = useState();
 
     const retrieveOwner = async () => {
         const owner = await contract.methods.owner().call({from: accounts[0]});
@@ -22,17 +22,15 @@ function Web3stuff() {
 
     const retrieveIsVoter = async () => {
         const voter = await contract.methods.getVoter(accounts[0]).call({from: accounts[0]});
-        setRegistered(voter.isRegistered);
+        setUser(voter);
     }
 
     const getStatus = async () => {
         const activeStep = await contract.methods.workflowStatus().call({from: accounts[0]});
         setActiveStep(parseInt(activeStep));
-        console.log(activeStep);
     }
 
     const isOwner = () => {
-        console.log("isOwner called");
         return accounts && accounts[0] && accounts[0] === owner;
     }
 
@@ -50,20 +48,22 @@ function Web3stuff() {
     const steps = ["Register Voter", "Register Proposal", "Vote", "Results"];
 
     function getStepContent(step) {
-        console.log(step+"df");
+        if(!isOwner() && !user?.registered){
+            return <h1 color={"red"}>You don't have access to this vote</h1>
+        }
         switch (step) {
             case 0:
-                return <RegisterVoter next={next} isVoter={registered} isOwner={isOwner()}/>;
+                return <RegisterVoter next={next} isVoter={user?.registered} isOwner={isOwner()}/>;
             case 1:
-                return <RegisterProposal isFinished={false} isVoter={registered} isOwner={isOwner()} next={next}/>;
+                return <RegisterProposal isFinished={false} isVoter={user?.registered} isOwner={isOwner()} next={next}/>;
             case 2:
-                return <RegisterProposal isFinished={true} isVoter={registered} isOwner={isOwner()} next={next}/>;
+                return <RegisterProposal isFinished={true} isVoter={user?.registered} isOwner={isOwner()} next={next}/>;
             case 3:
-                return <Vote isFinished={false} isVoter={registered} isOwner={isOwner()} next={next}/>;
+                return <Vote isFinished={false} voter={user} isOwner={isOwner()} next={next}/>;
             case 4:
-                return <Vote isFinished={true} isVoter={registered} isOwner={isOwner()} next={next}/>;
+                return <Vote isFinished={true} voter={user} isOwner={isOwner()} next={next}/>;
             case 5:
-                return <VoteTailed/>;
+                return <VoteTailed isVoter={user?.registered} />;
         }
     }
 
